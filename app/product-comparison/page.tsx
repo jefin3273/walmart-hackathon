@@ -17,7 +17,7 @@ const allProducts = [
     brand: "Pantene",
     price: 8.99,
     category: "shampoo",
-    image: "/placeholder.svg",
+    image: "/items/panteen.jpg",
     rating: 4.5,
     reviews: 1247,
     ingredients: ["Water", "Sodium Laureth Sulfate", "Cocamidopropyl Betaine", "Sodium Citrate"],
@@ -38,7 +38,7 @@ const allProducts = [
     brand: "Herbal Essences",
     price: 6.49,
     category: "shampoo",
-    image: "/placeholder.svg",
+    image: "/items/herbal.jpg",
     rating: 4.2,
     reviews: 892,
     ingredients: ["Water", "Sodium Lauryl Sulfate", "Cocamide MEA", "Fragrance"],
@@ -60,7 +60,7 @@ const allProducts = [
     brand: "Head & Shoulders",
     price: 7.99,
     category: "shampoo",
-    image: "/placeholder.svg",
+    image: "/items/head.jpg",
     rating: 4.3,
     reviews: 1456,
     ingredients: ["Water", "Zinc Pyrithione", "Sodium Laureth Sulfate"],
@@ -163,9 +163,8 @@ export default function ProductComparisonPage() {
                 {availableProducts.map((product) => (
                   <Card
                     key={product.id}
-                    className={`cursor-pointer transition-all ${
-                      compareList.includes(product.id) ? "ring-2 ring-blue-500" : ""
-                    }`}
+                    className={`cursor-pointer transition-all ${compareList.includes(product.id) ? "ring-2 ring-blue-500" : ""
+                      }`}
                     onClick={() => {
                       if (compareList.includes(product.id)) {
                         setCompareList(compareList.filter((id) => id !== product.id))
@@ -179,8 +178,8 @@ export default function ProductComparisonPage() {
                         src={product.image || "/placeholder.svg"}
                         alt={product.name}
                         width={100}
-                        height={100}
-                        className="w-full h-20 object-cover rounded mb-2"
+                        height={300}
+                        className="w-full h-40 object-cover rounded mb-2"
                       />
                       <h4 className="font-medium text-sm">{product.name}</h4>
                       <p className="text-xs text-gray-600">{product.brand}</p>
@@ -234,7 +233,7 @@ export default function ProductComparisonPage() {
                   alt={product.name}
                   width={200}
                   height={200}
-                  className="w-full h-48 object-cover rounded-lg"
+                  className="w-full h-52 object-cover rounded-lg"
                 />
 
                 {/* Price */}

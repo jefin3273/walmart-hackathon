@@ -11,7 +11,7 @@ const products = [
   {
     id: "1",
     name: "iPhone 15 Pro",
-    image: "/placeholder.svg",
+    image: "/items/iphone.webp",
     rating: 4.3,
     totalReviews: 2847,
     sentiment: {
@@ -34,7 +34,7 @@ const products = [
   {
     id: "2",
     name: "Samsung Galaxy S24",
-    image: "/placeholder.svg",
+    image: "/items/samsung.jpg",
     rating: 4.1,
     totalReviews: 1923,
     sentiment: {
@@ -57,7 +57,7 @@ const products = [
   {
     id: "3",
     name: "Google Pixel 8",
-    image: "/placeholder.svg",
+    image: "/items/pixel.png",
     rating: 4.5,
     totalReviews: 1456,
     sentiment: {
@@ -112,8 +112,8 @@ export default function ReviewSummarizerPage() {
                   src={product.image || "/placeholder.svg"}
                   alt={product.name}
                   width={100}
-                  height={100}
-                  className="w-full h-32 object-cover rounded-lg mb-3"
+                  height={300}
+                  className="w-full h-74  object-cover rounded-lg mb-3"
                 />
                 <h3 className="font-semibold">{product.name}</h3>
                 <div className="flex items-center space-x-2 mt-2">
@@ -252,7 +252,7 @@ export default function ReviewSummarizerPage() {
                   alt={selectedProduct.name}
                   width={200}
                   height={200}
-                  className="w-full h-48 object-cover rounded-lg mb-4"
+                  className="w-full h-74 object-cover rounded-lg mb-4"
                 />
                 <h3 className="font-semibold text-lg mb-2">{selectedProduct.name}</h3>
                 <div className="flex items-center space-x-2 mb-4">
