@@ -1,120 +1,118 @@
-"use client"
+'use client'
+import React, { useState } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Badge } from '@/components/ui/badge'
+import { Search, MapPin, Navigation, Clock, X, Info, Zap, ShoppingCart, Shirt, Smartphone, Package } from 'lucide-react'
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Search, MapPin, Navigation, Zap, Clock, X, Info } from "lucide-react"
+const searchResults = [
+  { name: "iPhone 15", section: "Electronics", aisle: "E-2", price: "$799", inStock: true, sectionId: 2 },
+  { name: "Milk", section: "Grocery", aisle: "G-2", price: "$3.99", inStock: true, sectionId: 1 },
+  { name: "Samsung TV", section: "Electronics", aisle: "E-1", price: "$599", inStock: true, sectionId: 2 },
+  { name: "Nike Shoes", section: "Clothing", aisle: "C-3", price: "$89.99", inStock: true, sectionId: 3 },
+  { name: "Advil", section: "General", aisle: "H-1", price: "$8.99", inStock: true, sectionId: 4 },
+]
 
 const storeLayout = {
   sections: [
     {
       id: 1,
       name: "Grocery",
-      x: 20,
-      y: 30,
+      x: 25,
+      y: 35,
+      width: 20,
+      height: 30,
       color: "bg-green-500",
-      icon: "🛒",
+      icon: <ShoppingCart className="w-6 h-6" />,
       aisles: [
-        { id: "G-1", name: "Produce", items: ["Apples", "Bananas", "Lettuce", "Tomatoes"] },
-        { id: "G-2", name: "Dairy", items: ["Milk", "Cheese", "Yogurt", "Butter"] },
-        { id: "G-3", name: "Meat", items: ["Chicken", "Beef", "Pork", "Fish"] },
-        { id: "G-4", name: "Frozen", items: ["Ice Cream", "Frozen Pizza", "Vegetables"] },
-        { id: "G-5", name: "Bakery", items: ["Bread", "Cakes", "Pastries", "Donuts"] },
-        { id: "G-6", name: "Deli", items: ["Sandwiches", "Salads", "Hot Food"] },
+        { id: "G-1", name: "Produce", items: ["Fresh Apples", "Bananas", "Organic Lettuce", "Tomatoes", "Carrots"] },
+        { id: "G-2", name: "Dairy", items: ["Whole Milk", "Cheese", "Greek Yogurt", "Butter", "Eggs"] },
+        { id: "G-3", name: "Meat & Seafood", items: ["Fresh Chicken", "Ground Beef", "Salmon", "Pork Chops"] },
+        { id: "G-4", name: "Frozen Foods", items: ["Ice Cream", "Frozen Pizza", "Frozen Vegetables", "Frozen Meals"] },
+        { id: "G-5", name: "Bakery", items: ["Fresh Bread", "Cakes", "Pastries", "Donuts", "Bagels"] },
+        { id: "G-6", name: "Pantry", items: ["Pasta", "Rice", "Canned Goods", "Cereals", "Snacks"] },
       ],
     },
     {
       id: 2,
       name: "Electronics",
-      x: 75,
+      x: 55,
       y: 25,
+      width: 20,
+      height: 25,
       color: "bg-blue-500",
-      icon: "📱",
+      icon: <Smartphone className="w-6 h-6" />,
       aisles: [
-        { id: "E-1", name: "TVs", items: ["Samsung TV", "LG TV", "Sony TV"] },
-        { id: "E-2", name: "Phones", items: ["iPhone", "Samsung Galaxy", "Google Pixel"] },
-        { id: "E-3", name: "Computers", items: ["Laptops", "Desktops", "Tablets"] },
-        { id: "E-4", name: "Gaming", items: ["PlayStation", "Xbox", "Nintendo"] },
-        { id: "E-5", name: "Audio", items: ["Headphones", "Speakers", "Soundbars"] },
+        { id: "E-1", name: "TVs & Audio", items: ["Samsung TV", "LG OLED", "Sound Bars", "Headphones"] },
+        { id: "E-2", name: "Mobile Phones", items: ["iPhone 15", "Samsung Galaxy", "Phone Cases", "Chargers"] },
+        { id: "E-3", name: "Computers", items: ["Laptops", "Tablets", "Keyboards", "Mice"] },
+        { id: "E-4", name: "Gaming", items: ["PlayStation 5", "Xbox", "Nintendo Switch", "Games"] },
+        { id: "E-5", name: "Smart Home", items: ["Smart Speakers", "Security Cameras", "Smart Bulbs"] },
       ],
     },
     {
       id: 3,
-      name: "Pharmacy",
-      x: 85,
+      name: "Clothing",
+      x: 25,
       y: 75,
-      color: "bg-red-500",
-      icon: "💊",
+      width: 20,
+      height: 20,
+      color: "bg-purple-500",
+      icon: <Shirt className="w-6 h-6" />,
       aisles: [
-        { id: "P-1", name: "Prescriptions", items: ["Pickup Counter", "Drop-off"] },
-        { id: "P-2", name: "Health", items: ["Vitamins", "Pain Relief", "Cold Medicine"] },
-        { id: "P-3", name: "Beauty", items: ["Skincare", "Makeup", "Hair Care"] },
+        { id: "C-1", name: "Men's Clothing", items: ["T-Shirts", "Jeans", "Shirts", "Jackets"] },
+        { id: "C-2", name: "Women's Clothing", items: ["Dresses", "Blouses", "Pants", "Skirts"] },
+        { id: "C-3", name: "Shoes", items: ["Nike Shoes", "Boots", "Sandals", "Sneakers"] },
+        { id: "C-4", name: "Accessories", items: ["Bags", "Belts", "Jewelry", "Watches"] },
+        { id: "C-5", name: "Kids Clothing", items: ["Kids T-Shirts", "School Uniforms", "Baby Clothes"] },
       ],
     },
     {
       id: 4,
-      name: "Clothing",
-      x: 35,
-      y: 70,
-      color: "bg-purple-500",
-      icon: "👕",
-      aisles: [
-        { id: "C-1", name: "Men's", items: ["Shirts", "Pants", "Suits"] },
-        { id: "C-2", name: "Women's", items: ["Dresses", "Tops", "Jeans"] },
-        { id: "C-3", name: "Kids", items: ["Boys", "Girls", "Baby"] },
-        { id: "C-4", name: "Shoes", items: ["Athletic", "Dress", "Casual"] },
-      ],
-    },
-    {
-      id: 5,
-      name: "Home & Garden",
-      x: 50,
-      y: 50,
+      name: "General",
+      x: 55,
+      y: 65,
+      width: 20,
+      height: 30,
       color: "bg-orange-500",
-      icon: "🏠",
+      icon: <Package className="w-6 h-6" />,
       aisles: [
-        { id: "H-1", name: "Furniture", items: ["Chairs", "Tables", "Sofas"] },
-        { id: "H-2", name: "Kitchen", items: ["Appliances", "Cookware", "Utensils"] },
-        { id: "H-3", name: "Garden", items: ["Plants", "Tools", "Fertilizer"] },
-      ],
-    },
-    {
-      id: 6,
-      name: "Automotive",
-      x: 15,
-      y: 85,
-      color: "bg-gray-600",
-      icon: "🚗",
-      aisles: [
-        { id: "A-1", name: "Tires", items: ["Car Tires", "Truck Tires"] },
-        { id: "A-2", name: "Oil & Fluids", items: ["Motor Oil", "Brake Fluid"] },
+        { id: "H-1", name: "Health & Beauty", items: ["Advil", "Vitamins", "Shampoo", "Makeup"] },
+        { id: "H-2", name: "Home & Garden", items: ["Cleaning Supplies", "Tools", "Plants", "Décor"] },
+        { id: "H-3", name: "Sports & Outdoors", items: ["Exercise Equipment", "Camping Gear", "Bikes"] },
+        { id: "H-4", name: "Toys", items: ["Action Figures", "Board Games", "Dolls", "LEGO"] },
+        { id: "H-5", name: "Automotive", items: ["Motor Oil", "Car Accessories", "Tires"] },
       ],
     },
   ],
-  userLocation: { x: 50, y: 95, name: "You are here" },
+  userLocation: { x: 65, y: 45 },
   services: [
-    { id: "customer-service", x: 45, y: 85, name: "Customer Service", icon: "🛎️" },
-    { id: "restrooms", x: 55, y: 85, name: "Restrooms", icon: "🚻" },
-    { id: "pharmacy-counter", x: 87, y: 78, name: "Pharmacy Counter", icon: "💊" },
+    { id: "pharmacy", name: "Pharmacy", x: 85, y: 30, icon: "💊" },
+    { id: "customer-service", name: "Customer Service", x: 85, y: 50, icon: "ℹ️" },
+    { id: "restroom", name: "Restroom", x: 85, y: 70, icon: "🚻" },
+  ],
+  checkoutLanes: [
+    { id: 1, x: 15, y: 15, type: "regular" },
+    { id: 2, x: 20, y: 15, type: "regular" },
+    { id: 3, x: 25, y: 15, type: "regular" },
+    { id: 4, x: 30, y: 15, type: "regular" },
+    { id: 5, x: 35, y: 15, type: "express" },
+    { id: 6, x: 40, y: 15, type: "express" },
+    { id: 7, x: 45, y: 15, type: "self" },
+    { id: 8, x: 50, y: 15, type: "self" },
+    { id: 9, x: 55, y: 15, type: "self" },
+    { id: 10, x: 60, y: 15, type: "self" },
   ],
 }
 
-const searchResults = [
-  { name: "iPhone 15", section: "Electronics", aisle: "E-2", price: "$799", inStock: true, sectionId: 2 },
-  { name: "Organic Bananas", section: "Grocery", aisle: "G-1", price: "$2.99", inStock: true, sectionId: 1 },
-  { name: "Advil Pain Relief", section: "Pharmacy", aisle: "P-2", price: "$8.99", inStock: true, sectionId: 3 },
-  { name: "Nike Running Shoes", section: "Clothing", aisle: "C-4", price: "$89.99", inStock: true, sectionId: 4 },
-]
-
 export default function ARNavigationPage() {
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedProduct, setSelectedProduct] = useState<any>(null)
+  const [selectedProduct, setSelectedProduct] = useState(null)
   const [showPath, setShowPath] = useState(false)
-  const [selectedSection, setSelectedSection] = useState<any>(null)
-  const [selectedService, setSelectedService] = useState<any>(null)
-  const [navigationMode, setNavigationMode] = useState<"positioning" | "wayfinding" | "arrived">("positioning")
+  const [selectedSection, setSelectedSection] = useState(null)
+  const [selectedService, setSelectedService] = useState(null)
+  const [navigationMode, setNavigationMode] = useState("positioning")
 
   const handleSearch = () => {
     const result = searchResults.find((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -122,13 +120,12 @@ export default function ARNavigationPage() {
       setSelectedProduct(result)
       setShowPath(true)
       setNavigationMode("wayfinding")
-      // Close any open dropdowns
       setSelectedSection(null)
       setSelectedService(null)
     }
   }
 
-  const handleSectionClick = (section: any) => {
+  const handleSectionClick = (section) => {
     if (selectedSection?.id === section.id) {
       setSelectedSection(null)
     } else {
@@ -137,7 +134,7 @@ export default function ARNavigationPage() {
     }
   }
 
-  const handleServiceClick = (service: any) => {
+  const handleServiceClick = (service) => {
     if (selectedService?.id === service.id) {
       setSelectedService(null)
     } else {
@@ -160,11 +157,11 @@ export default function ARNavigationPage() {
     <div className="min-h-screen bg-gray-50 py-4">
       <div className="container mx-auto px-4">
         <div className="text-center mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Store Navigation</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Walmart Store Navigation</h1>
           <p className="text-sm md:text-lg text-gray-600">Find products with indoor GPS</p>
         </div>
 
-        {/* Search Bar - Google Maps Style */}
+        {/* Search Bar */}
         <div className="relative mb-6">
           <Card className="shadow-lg">
             <CardContent className="p-4">
@@ -193,7 +190,7 @@ export default function ARNavigationPage() {
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center text-lg">
                     <MapPin className="w-5 h-5 mr-2 text-[#0071dc]" />
-                    Walmart Store Map
+                    Store Floor Plan
                   </CardTitle>
                   <div className="flex space-x-2">
                     <Badge className="bg-[#0071dc] text-white">
@@ -203,15 +200,56 @@ export default function ARNavigationPage() {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="p-0">
-                <div className="relative bg-gradient-to-br from-blue-50 to-gray-100 rounded-lg h-[500px] md:h-[600px] overflow-hidden">
-                  {/* Store Sections - Clean Markers */}
+              <CardContent className="p-2">
+                <div className="relative bg-white rounded-lg h-[500px] md:h-[600px] overflow-hidden border-2 border-gray-200">
+                  {/* Store Entrance */}
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-4 bg-gray-300 rounded-t-lg flex items-center justify-center">
+                    <span className="text-xs font-semibold text-gray-700">🚪 ENTRANCE</span>
+                  </div>
+
+                  {/* Checkout Lanes */}
+                  <div className="absolute bottom-5 left-0 right-0 px-4">
+                    <div className="bg-gray-100 rounded-lg p-2">
+                      <div className="text-xs font-semibold text-gray-600 mb-2 text-center">CHECKOUT LANES</div>
+                      <div className="flex justify-center space-x-1">
+                        {storeLayout.checkoutLanes.map((lane) => (
+                          <div
+                            key={lane.id}
+                            className={`w-6 h-8 rounded text-xs flex items-center justify-center font-bold ${lane.type === 'express' ? 'bg-yellow-400 text-black' :
+                              lane.type === 'self' ? 'bg-blue-400 text-white' : 'bg-gray-400 text-white'
+                              }`}
+                          >
+                            {lane.id}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="flex justify-center space-x-4 mt-1 text-xs text-gray-500">
+                        <span>Regular</span>
+                        <span className="text-yellow-600">Express</span>
+                        <span className="text-blue-600">Self-Checkout</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Store Sections */}
                   {storeLayout.sections.map((section) => (
                     <div key={section.id}>
+                      {/* Section Area */}
+                      <div
+                        className={`absolute ${section.color} opacity-20 rounded-lg border-2 border-current`}
+                        style={{
+                          left: `${section.x}%`,
+                          top: `${section.y}%`,
+                          width: `${section.width}%`,
+                          height: `${section.height}%`,
+                          transform: "translate(-50%, -50%)",
+                        }}
+                      />
+
+                      {/* Section Button */}
                       <button
-                        className={`absolute w-12 h-12 ${section.color} rounded-full shadow-lg flex items-center justify-center text-white text-lg hover:scale-110 transition-all duration-200 border-4 border-white ${
-                          selectedSection?.id === section.id ? "ring-4 ring-blue-400 scale-110" : ""
-                        }`}
+                        className={`absolute w-14 h-14 ${section.color} rounded-full shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all duration-200 border-4 border-white z-10 ${selectedSection?.id === section.id ? "ring-4 ring-blue-400 scale-110" : ""
+                          }`}
                         style={{
                           left: `${section.x}%`,
                           top: `${section.y}%`,
@@ -224,10 +262,10 @@ export default function ARNavigationPage() {
 
                       {/* Section Label */}
                       <div
-                        className="absolute bg-white px-2 py-1 rounded-md shadow-md text-xs font-medium pointer-events-none"
+                        className="absolute bg-white px-3 py-1 rounded-md shadow-md text-xs font-semibold pointer-events-none z-10"
                         style={{
                           left: `${section.x}%`,
-                          top: `${section.y + 8}%`,
+                          top: `${section.y + (section.height / 2) + 5}%`,
                           transform: "translate(-50%, 0)",
                         }}
                       >
@@ -240,9 +278,8 @@ export default function ARNavigationPage() {
                   {storeLayout.services.map((service) => (
                     <div key={service.id}>
                       <button
-                        className={`absolute w-8 h-8 bg-yellow-400 rounded-full shadow-md flex items-center justify-center text-sm hover:scale-110 transition-all duration-200 ${
-                          selectedService?.id === service.id ? "ring-4 ring-yellow-300 scale-110" : ""
-                        }`}
+                        className={`absolute w-10 h-10 bg-yellow-400 rounded-full shadow-md flex items-center justify-center text-lg hover:scale-110 transition-all duration-200 border-2 border-white z-10 ${selectedService?.id === service.id ? "ring-4 ring-yellow-300 scale-110" : ""
+                          }`}
                         style={{
                           left: `${service.x}%`,
                           top: `${service.y}%`,
@@ -257,7 +294,7 @@ export default function ARNavigationPage() {
 
                   {/* User Location */}
                   <div
-                    className="absolute w-4 h-4 bg-blue-500 rounded-full border-4 border-white shadow-lg"
+                    className="absolute w-5 h-5 bg-blue-500 rounded-full border-3 border-white shadow-lg z-20"
                     style={{
                       left: `${storeLayout.userLocation.x}%`,
                       top: `${storeLayout.userLocation.y}%`,
@@ -267,10 +304,22 @@ export default function ARNavigationPage() {
                     <div className="absolute inset-0 bg-blue-500 rounded-full animate-ping opacity-75"></div>
                   </div>
 
+                  {/* User Location Label */}
+                  <div
+                    className="absolute bg-blue-500 text-white px-2 py-1 rounded-md text-xs font-semibold pointer-events-none z-20"
+                    style={{
+                      left: `${storeLayout.userLocation.x}%`,
+                      top: `${storeLayout.userLocation.y + 5}%`,
+                      transform: "translate(-50%, 0)",
+                    }}
+                  >
+                    You are here
+                  </div>
+
                   {/* Destination Marker */}
                   {selectedProduct && (
                     <div
-                      className="absolute w-8 h-8 bg-red-500 rounded-full border-2 border-white shadow-lg flex items-center justify-center text-white text-xs font-bold animate-bounce"
+                      className="absolute w-10 h-10 bg-red-500 rounded-full border-3 border-white shadow-lg flex items-center justify-center text-white text-lg font-bold animate-bounce z-20"
                       style={{
                         left: `${storeLayout.sections.find((s) => s.id === selectedProduct.sectionId)?.x}%`,
                         top: `${storeLayout.sections.find((s) => s.id === selectedProduct.sectionId)?.y}%`,
@@ -283,20 +332,17 @@ export default function ARNavigationPage() {
 
                   {/* Navigation Path */}
                   {showPath && selectedProduct && navigationMode === "wayfinding" && (
-                    <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute inset-0 pointer-events-none z-10">
                       <svg className="w-full h-full">
                         <path
-                          d={`M ${storeLayout.userLocation.x}% ${storeLayout.userLocation.y}% Q ${
-                            (storeLayout.userLocation.x +
-                              (storeLayout.sections.find((s) => s.id === selectedProduct.sectionId)?.x || 0)) /
+                          d={`M ${storeLayout.userLocation.x}% ${storeLayout.userLocation.y}% Q ${(storeLayout.userLocation.x +
+                            (storeLayout.sections.find((s) => s.id === selectedProduct.sectionId)?.x || 0)) /
                             2
-                          }% ${
-                            (storeLayout.userLocation.y +
+                            }% ${(storeLayout.userLocation.y +
                               (storeLayout.sections.find((s) => s.id === selectedProduct.sectionId)?.y || 0)) /
                             2
-                          }% ${storeLayout.sections.find((s) => s.id === selectedProduct.sectionId)?.x}% ${
-                            storeLayout.sections.find((s) => s.id === selectedProduct.sectionId)?.y
-                          }%`}
+                            }% ${storeLayout.sections.find((s) => s.id === selectedProduct.sectionId)?.x}% ${storeLayout.sections.find((s) => s.id === selectedProduct.sectionId)?.y
+                            }%`}
                           stroke="#3b82f6"
                           strokeWidth="4"
                           fill="none"
@@ -307,21 +353,9 @@ export default function ARNavigationPage() {
                     </div>
                   )}
 
-                  {/* Entrance */}
-                  <div
-                    className="absolute bg-green-500 text-white px-3 py-1 rounded-lg text-sm font-semibold shadow-lg"
-                    style={{
-                      left: `${storeLayout.userLocation.x}%`,
-                      top: `${storeLayout.userLocation.y + 5}%`,
-                      transform: "translate(-50%, 0)",
-                    }}
-                  >
-                    🚪 Main Entrance
-                  </div>
-
                   {/* Arrival Notification */}
                   {navigationMode === "arrived" && (
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-2xl p-6 text-center animate-bounce border-4 border-green-500">
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-2xl p-6 text-center animate-bounce border-4 border-green-500 z-30">
                       <div className="text-4xl mb-2">🎉</div>
                       <div className="font-bold text-lg text-green-600">You've Arrived!</div>
                       <div className="text-sm text-gray-600">Product found in {selectedProduct?.aisle}</div>
@@ -331,13 +365,15 @@ export default function ARNavigationPage() {
               </CardContent>
             </Card>
 
-            {/* Section Details Dropdown */}
+            {/* Section Details */}
             {selectedSection && (
-              <Card className="mt-4 shadow-lg border-l-4 border-l-blue-500 animate-in slide-in-from-top-2">
+              <Card className="mt-4 shadow-lg border-l-4 border-l-blue-500">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center">
-                      <span className="text-2xl mr-2">{selectedSection.icon}</span>
+                      <div className={`w-8 h-8 ${selectedSection.color} rounded-full flex items-center justify-center text-white mr-3`}>
+                        {selectedSection.icon}
+                      </div>
                       {selectedSection.name} Section
                     </CardTitle>
                     <Button variant="ghost" size="sm" onClick={() => setSelectedSection(null)}>
@@ -347,22 +383,22 @@ export default function ARNavigationPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {selectedSection.aisles.map((aisle: any) => (
+                    {selectedSection.aisles.map((aisle) => (
                       <Card key={aisle.id} className="border hover:border-blue-300 transition-colors cursor-pointer">
                         <CardContent className="p-3">
                           <div className="flex items-center justify-between mb-2">
-                            <Badge variant="outline">{aisle.id}</Badge>
+                            <Badge variant="outline" className="font-semibold">{aisle.id}</Badge>
                             <Info className="w-4 h-4 text-gray-400" />
                           </div>
-                          <h4 className="font-medium text-sm mb-2">{aisle.name}</h4>
+                          <h4 className="font-semibold text-sm mb-2">{aisle.name}</h4>
                           <div className="space-y-1">
-                            {aisle.items.slice(0, 3).map((item: string, index: number) => (
+                            {aisle.items.slice(0, 3).map((item, index) => (
                               <div key={index} className="text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded">
                                 {item}
                               </div>
                             ))}
                             {aisle.items.length > 3 && (
-                              <div className="text-xs text-blue-600">+{aisle.items.length - 3} more items</div>
+                              <div className="text-xs text-blue-600 font-medium">+{aisle.items.length - 3} more items</div>
                             )}
                           </div>
                         </CardContent>
@@ -373,9 +409,9 @@ export default function ARNavigationPage() {
               </Card>
             )}
 
-            {/* Service Details Dropdown */}
+            {/* Service Details */}
             {selectedService && (
-              <Card className="mt-4 shadow-lg border-l-4 border-l-yellow-500 animate-in slide-in-from-top-2">
+              <Card className="mt-4 shadow-lg border-l-4 border-l-yellow-500">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center">
@@ -395,7 +431,7 @@ export default function ARNavigationPage() {
                     </div>
                     <div className="flex items-center space-x-2">
                       <MapPin className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm">Ground Floor, Near Main Entrance</span>
+                      <span className="text-sm">Located near the entrance</span>
                     </div>
                     <Button className="w-full bg-[#ffc220] text-[#0071dc] hover:bg-[#ffc220]/90">
                       <Navigation className="w-4 h-4 mr-2" />
@@ -430,7 +466,7 @@ export default function ARNavigationPage() {
                       <Navigation className="w-4 h-4 mr-2" />
                       Start Navigation
                     </Button>
-                    <Button variant="outline" className="w-full bg-transparent">
+                    <Button variant="outline" className="w-full">
                       Add to Cart
                     </Button>
                   </div>
@@ -452,12 +488,12 @@ export default function ARNavigationPage() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-2">
-                  {["iPhone", "Milk", "TV", "Advil", "Shoes", "Toys"].map((item) => (
+                  {["iPhone", "Milk", "Samsung TV", "Advil", "Nike Shoes", "Toys"].map((item) => (
                     <Button
                       key={item}
                       variant="outline"
                       size="sm"
-                      className="text-xs bg-transparent hover:bg-blue-50"
+                      className="text-xs hover:bg-blue-50"
                       onClick={() => {
                         setSearchQuery(item)
                         handleSearch()
@@ -479,12 +515,8 @@ export default function ARNavigationPage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">Mode:</span>
-                    <Badge className={navigationMode === "positioning" ? "bg-blue-500" : "bg-gray-400"}>
-                      {navigationMode === "positioning"
-                        ? "Positioning"
-                        : navigationMode === "wayfinding"
-                          ? "Navigating"
-                          : "Arrived"}
+                    <Badge className={navigationMode === "positioning" ? "bg-blue-500" : navigationMode === "wayfinding" ? "bg-green-500" : "bg-purple-500"}>
+                      {navigationMode === "positioning" ? "Positioning" : navigationMode === "wayfinding" ? "Navigating" : "Arrived"}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
@@ -504,3 +536,4 @@ export default function ARNavigationPage() {
     </div>
   )
 }
+

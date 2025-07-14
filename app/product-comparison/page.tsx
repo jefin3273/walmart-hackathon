@@ -178,8 +178,8 @@ export default function ProductComparisonPage() {
                         src={product.image || "/placeholder.svg"}
                         alt={product.name}
                         width={100}
-                        height={300}
-                        className="w-full h-40 object-cover rounded mb-2"
+                        height={200}
+                        className="w-full aspect-square object-cover rounded mb-2"
                       />
                       <h4 className="font-medium text-sm">{product.name}</h4>
                       <p className="text-xs text-gray-600">{product.brand}</p>
@@ -233,7 +233,7 @@ export default function ProductComparisonPage() {
                   alt={product.name}
                   width={200}
                   height={200}
-                  className="w-full h-52 object-cover rounded-lg"
+                  className="w-full aspect-square object-cover rounded-lg"
                 />
 
                 {/* Price */}
